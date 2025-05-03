@@ -1,24 +1,22 @@
 import express from 'express';
-import dotenv from 'dotenv'; // importar as variaveis de ambiente
-import db from './database/configdb.js'; // importar a conexao com o banco de dados
-import userRoutes from './routes/user.route.js'; // importar as rotas de usuario
-import User from './models/User.js'; // importar o modelo User
+import dotenv from 'dotenv';
+import db from './database/configdb.js';
+import userRoute from './routes/user.route.js';
+import tokenRoute from './routes/token.route.js';
 
-
-dotenv.config(); // configurar as variaveis de ambiente
-db.connect(); // conectar ao banco de dados
+dotenv.config();
+db.connect();
 
 const app = express();
 
-
-app.use(express.json()); // middleware para interpretar JSON
-
-app.use("/users", userRoutes); // usar as rotas de usuario
-app.get('/', (req, res) => {   
-    res.send({message:'Hello World!'});
+app.use(express.json());
+app.use("/users", userRoute);
+app.use("/", tokenRoute);
+app.get('/', (req, res) => {
+  res.send('Banco de Dados está rodando!');
 });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Server is running on port http://localhost:${PORT}/`);
-    });
+  console.log(`Server is running on port ${PORT}`);
+});
